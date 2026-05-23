@@ -73,7 +73,7 @@ A full-stack, highly interactive project management application inspired by Trel
    ```
    - Create a `.env` file in the `client` directory:
      ```env
-     VITE_API_URL=http://localhost:5000/api
+     VITE_API_URL=http://localhost:3000
      ```
    - Start the development server:
      ```bash
@@ -97,7 +97,7 @@ Since this repository contains both the client and the server (Monorepo structur
 - **Root Directory**: `client`
 - **Build Command**: `npm install && npm run build`
 - **Publish Directory**: `client/dist`
-- **Environment Variables**: Add `VITE_API_URL` pointing to your deployed backend URL (e.g., `https://your-backend.onrender.com/api`).
+- **Environment Variables**: Add `VITE_API_URL` pointing to your deployed backend URL (e.g., `https://your-backend.onrender.com`).
 - **Routing**: Under Advanced Settings, set up a Rewrite Rule for SPAs:
   - Source: `/*`
   - Destination: `/index.html`
