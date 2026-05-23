@@ -40,6 +40,22 @@ const start = async () => {
     const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
       console.log("Server running on port " + PORT + "...");
+
+      // Minimal self-ping to prevent Render from sleeping
+      // Render automatically provides RENDER_EXTERNAL_URL
+      const publicUrl = process.env.RENDER_EXTERNAL_URL;
+      if (publicUrl) {
+        console.log("Self-ping enabled for", publicUrl);
+        setInterval(async () => {
+          try {
+            // Ping our own boards endpoint to keep the server awake
+            await fetch(`${publicUrl}/boards`);
+            console.log("Self-ping successful");
+          } catch (err) {
+            console.error("Self-ping failed:", err.message);
+          }
+        }, 14 * 60 * 1000); // 14 minutes
+      }
     });
   } catch (err) {
     console.error("Startup failed", err);
