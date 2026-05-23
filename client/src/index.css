@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-trello-blue: #579DFF;
+  --color-trello-blue-dark: #388BFD;
+  --color-trello-blue-light: #0079BF;
+  --color-trello-bg: #1D2125;
+  --color-trello-text: #B6C2CF;
+  --color-trello-text-light: #8C9BAB;
+  --color-list-bg: #101204;
+  --color-card-bg: #22272B;
+  --color-card-shadow: rgba(0, 0, 0, 0.3);
+  --color-hover-bg: rgba(255, 255, 255, 0.08);
+  --color-surface: #282E33;
+  --color-surface-raised: #2C333A;
+  --color-border: #3D454D;
+  --color-text-heading: #D7DFE5;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: var(--color-trello-text);
+  background-color: var(--color-trello-bg);
+  overflow-y: hidden;
+}
+
+*:focus {
+  outline: none;
+}
+*:focus-visible {
+  outline: 2px solid var(--color-trello-blue);
+  outline-offset: 2px;
+}

@@ -1,0 +1,194 @@
+// Prisma Schema for Trello Clone - Project Management Tool
+// Database: PostgreSQL (Neon - serverless)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Members (seeded users, no auth required per assignment) ─────────────
+
+model Member {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  avatarUrl String?
+  createdAt DateTime @default(now())
+
+  cardMembers CardMember[]
+  comments    Comment[]
+  activities  Activity[]
+}
+
+// ─── Board ────────────────────────────────────────────────────────────────
+
+model Board {
+  id              String   @id @default(uuid())
+  title           String
+  backgroundColor String   @default("#0079BF")
+  backgroundImage String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  lists List[]
+}
+
+// ─── List ─────────────────────────────────────────────────────────────────
+
+model List {
+  id         String   @id @default(uuid())
+  title      String
+  position   Float
+  boardId    String
+  isArchived Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  board Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  cards Card[]
+
+  @@index([boardId, position])
+}
+
+// ─── Card ─────────────────────────────────────────────────────────────────
+
+model Card {
+  id          String    @id @default(uuid())
+  title       String
+  description String?
+  position    Float
+  listId      String
+  dueDate     DateTime?
+  isComplete  Boolean   @default(false)
+  coverImage  String?
+  coverColor  String?
+  isArchived  Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  list        List          @relation(fields: [listId], references: [id], onDelete: Cascade)
+  labels      CardLabel[]
+  checklists  Checklist[]
+  members     CardMember[]
+  comments    Comment[]
+  attachments Attachment[]
+  activities  Activity[]
+
+  @@index([listId, position])
+}
+
+// ─── Label ────────────────────────────────────────────────────────────────
+
+model Label {
+  id    String  @id @default(uuid())
+  name  String?
+  color String
+
+  cards CardLabel[]
+}
+
+// ─── CardLabel (many-to-many join) ────────────────────────────────────────
+
+model CardLabel {
+  cardId  String
+  labelId String
+
+  card  Card  @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, labelId])
+}
+
+// ─── CardMember (many-to-many join) ───────────────────────────────────────
+
+model CardMember {
+  cardId   String
+  memberId String
+
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@id([cardId, memberId])
+}
+
+// ─── Checklist ────────────────────────────────────────────────────────────
+
+model Checklist {
+  id       String @id @default(uuid())
+  title    String
+  position Float
+  cardId   String
+
+  card  Card            @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  items ChecklistItem[]
+
+  @@index([cardId])
+}
+
+// ─── ChecklistItem ────────────────────────────────────────────────────────
+
+model ChecklistItem {
+  id          String  @id @default(uuid())
+  text        String
+  isCompleted Boolean @default(false)
+  position    Float
+  checklistId String
+
+  checklist Checklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+
+  @@index([checklistId])
+}
+
+// ─── Comment ──────────────────────────────────────────────────────────────
+
+model Comment {
+  id        String   @id @default(uuid())
+  text      String
+  cardId    String
+  memberId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  card   Card   @relation(fields: [cardId], references: [id], onDelete: Cascade)
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([cardId])
+}
+
+// ─── Attachment ───────────────────────────────────────────────────────────
+
+model Attachment {
+  id        String   @id @default(uuid())
+  filename  String
+  url       String
+  mimeType  String?
+  size      Int?
+  cardId    String
+  createdAt DateTime @default(now())
+
+  card Card @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  @@index([cardId])
+}
+
+// ─── Activity Log ─────────────────────────────────────────────────────────
+
+model Activity {
+  id         String   @id @default(uuid())
+  action     String
+  entityType String
+  entityId   String
+  cardId     String?
+  memberId   String?
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  card   Card?   @relation(fields: [cardId], references: [id], onDelete: SetNull)
+  member Member? @relation(fields: [memberId], references: [id])
+
+  @@index([cardId])
+}
