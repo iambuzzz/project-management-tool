@@ -1,5 +1,4 @@
 // routes/cardRouter.js — Card CRUD + Move + Reorder
-// The most feature-rich router — handles all card operations
 
 const express = require("express");
 const cardRouter = express.Router();

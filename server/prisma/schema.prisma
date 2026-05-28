@@ -1,6 +1,3 @@
-// Prisma Schema for Trello Clone - Project Management Tool
-// Database: PostgreSQL (Neon - serverless)
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -9,8 +6,6 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
-// ─── Members (seeded users, no auth required per assignment) ─────────────
 
 model Member {
   id        String   @id @default(uuid())
@@ -24,8 +19,6 @@ model Member {
   activities  Activity[]
 }
 
-// ─── Board ────────────────────────────────────────────────────────────────
-
 model Board {
   id              String   @id @default(uuid())
   title           String
@@ -36,8 +29,6 @@ model Board {
 
   lists List[]
 }
-
-// ─── List ─────────────────────────────────────────────────────────────────
 
 model List {
   id         String   @id @default(uuid())
@@ -53,8 +44,6 @@ model List {
 
   @@index([boardId, position])
 }
-
-// ─── Card ─────────────────────────────────────────────────────────────────
 
 model Card {
   id          String    @id @default(uuid())
@@ -81,8 +70,6 @@ model Card {
   @@index([listId, position])
 }
 
-// ─── Label ────────────────────────────────────────────────────────────────
-
 model Label {
   id    String  @id @default(uuid())
   name  String?
@@ -90,8 +77,6 @@ model Label {
 
   cards CardLabel[]
 }
-
-// ─── CardLabel (many-to-many join) ────────────────────────────────────────
 
 model CardLabel {
   cardId  String
@@ -103,7 +88,6 @@ model CardLabel {
   @@id([cardId, labelId])
 }
 
-// ─── CardMember (many-to-many join) ───────────────────────────────────────
 
 model CardMember {
   cardId   String
@@ -114,8 +98,6 @@ model CardMember {
 
   @@id([cardId, memberId])
 }
-
-// ─── Checklist ────────────────────────────────────────────────────────────
 
 model Checklist {
   id       String @id @default(uuid())
@@ -129,7 +111,6 @@ model Checklist {
   @@index([cardId])
 }
 
-// ─── ChecklistItem ────────────────────────────────────────────────────────
 
 model ChecklistItem {
   id          String  @id @default(uuid())
@@ -143,7 +124,6 @@ model ChecklistItem {
   @@index([checklistId])
 }
 
-// ─── Comment ──────────────────────────────────────────────────────────────
 
 model Comment {
   id        String   @id @default(uuid())
@@ -159,8 +139,6 @@ model Comment {
   @@index([cardId])
 }
 
-// ─── Attachment ───────────────────────────────────────────────────────────
-
 model Attachment {
   id        String   @id @default(uuid())
   filename  String
@@ -174,8 +152,6 @@ model Attachment {
 
   @@index([cardId])
 }
-
-// ─── Activity Log ─────────────────────────────────────────────────────────
 
 model Activity {
   id         String   @id @default(uuid())

@@ -5,13 +5,10 @@ import Board from './pages/Board';
 
 const NotFound = () => <div className="p-4 text-white">404 - Page Not Found</div>;
 
-// Main layout wrapper
 const Layout = ({ children }) => {
   return (
     <div className="h-screen flex flex-col font-sans overflow-hidden">
       <Header />
-      
-      {/* Main Content */}
       <main className="flex-1 relative flex overflow-hidden">
         {children}
       </main>

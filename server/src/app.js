@@ -1,11 +1,3 @@
-// app.js — Express Server Entry Point
-// Pattern: Same as DevTinder's app.js
-// - require() imports at top
-// - middleware setup
-// - router mounting (flat, like DevTinder)
-// - async start() function
-// - global error handlers at bottom
-
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
@@ -14,7 +6,6 @@ require("dotenv").config();
 
 const { notFoundHandler, globalErrorHandler } = require("./middlewares/errorHandler");
 
-// ─── Import Routers ───────────────────────────────────────────
 const boardRouter = require("./routes/boardRouter");
 const listRouter = require("./routes/listRouter");
 const cardRouter = require("./routes/cardRouter");
@@ -27,12 +18,8 @@ const searchRouter = require("./routes/searchRouter");
 
 const app = express();
 
-// ─── Start Server ─────────────────────────────────────────────
-// Same pattern as DevTinder: async start function with DB connection
-
 const start = async () => {
   try {
-    // verify DB connection
     const prisma = dbConnect();
     await prisma.$connect();
     console.log("PostgreSQL connected successfully...");
@@ -73,11 +60,6 @@ app.use(
 );
 app.use(express.json());
 
-// Serve uploaded files statically
-app.use("/uploads", express.static(path.join(__dirname, "../uploads")));
-
-// ─── Mount Routers ────────────────────────────────────────────
-// Flat mounting — same pattern as DevTinder's app.use("/", authRouter);
 
 app.use("/", boardRouter);
 app.use("/", listRouter);
@@ -88,9 +70,6 @@ app.use("/", checklistRouter);
 app.use("/", commentRouter);
 app.use("/", attachmentRouter);
 app.use("/", searchRouter);
-
-// ─── Global Error Handlers ────────────────────────────────────
-// Same pattern as DevTinder's bottom-of-file error handlers
 
 app.use(notFoundHandler);
 app.use(globalErrorHandler);

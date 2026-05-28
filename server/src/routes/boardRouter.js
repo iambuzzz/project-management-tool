@@ -1,6 +1,4 @@
 // routes/boardRouter.js — Board CRUD
-// Pattern: express.Router() with async try-catch handlers
-// Response format: { message, data } on success, { message, error } on failure
 
 const express = require("express");
 const boardRouter = express.Router();
@@ -64,7 +62,6 @@ boardRouter.post("/boards", async (req, res) => {
   }
 });
 
-// GET /boards/:id — Get board with all lists, cards, labels, members
 boardRouter.get("/boards/:id", async (req, res) => {
   try {
     const board = await prisma.board.findUnique({

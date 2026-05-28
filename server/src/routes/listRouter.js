@@ -1,5 +1,4 @@
 // routes/listRouter.js — List CRUD + Reorder
-// Pattern: Same as DevTinder's router files
 
 const express = require("express");
 const listRouter = express.Router();

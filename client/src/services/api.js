@@ -3,13 +3,11 @@ import { API_BASE_URL } from '../utils/constants';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  withCredentials: true, // Important for CORS and cookies if we add auth later
+  withCredentials: true, 
 });
 
-// Response interceptor to format errors globally
 api.interceptors.response.use(
   (response) => {
-    // Return standard axios response so we can extract .data in the services
     return response;
   },
   (error) => {
