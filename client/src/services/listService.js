@@ -19,7 +19,7 @@ export const listService = {
     return response.data;
   },
 
-  // Archive a list
+  // Delete a list
   deleteList: async (id) => {
     const response = await api.delete(`/lists/${id}`);
     return response;

@@ -18,7 +18,6 @@ const Board = () => {
   
   const reorderListsMutation = useReorderLists(id);
   const reorderCardsMutation = useReorderCards(id);
-  const moveCardMutation = useMoveCard(id);
   const updateCardMutation = useUpdateCard(id);
   const deleteCardMutation = useDeleteCard(id);
 
